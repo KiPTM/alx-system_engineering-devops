@@ -1,2 +1,2 @@
 #!/bin/bash
-mv $100-lets_move /tmp/u/
+mv [[ :upper: ]]* /tmp/u/
