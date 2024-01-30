@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Display a user-oriented process list with hierarchy
+pstree -a
