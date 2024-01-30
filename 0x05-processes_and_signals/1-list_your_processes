@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
 
-# Display a user-orientent
-
+#Disp usr-orientent
 ps auxf
