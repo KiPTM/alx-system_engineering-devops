@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-# Display a user-oriented process list with hierarchy
-pstree -a
+# Display a user-orientent
+
+ps auxf
