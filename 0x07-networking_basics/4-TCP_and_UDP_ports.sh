@@ -1,3 +1,3 @@
-#!usr/bin/env bash
+#!/usr/bin/env bash
 # Display active internet connections with listening sockets
-netstat -ip
+netstat -Ip
