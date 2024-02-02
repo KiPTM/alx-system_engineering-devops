@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Display active internet connections with listening sockets
+netstat -tuln | grep 'LISTEN' | awk '{print $1, $4, $5, $6}' | while read -r proto local foreign state; do
+    # Extract IP and port from the local address
+    IFS=':' read -r ip port <<< "$local"
+    
+    # Get the PID and program name associated with the socket
+    pid=$(lsof -i :"${port}" -sTCP:LISTEN -t)
+    program=$(ps -p "${pid}" -o comm=)
+    
+    # Display the information
+    echo -e "$proto\t$ip\t$port\t$foreign\t$state\t$pid/$program"
+done
+
+# Display active UNIX domain sockets with listening servers
+netstat -uln | grep 'LISTEN' | awk '{print $1, $4, $5}' | while read -r proto local path; do
+    # Get the PID and program name associated with the socket
+    pid=$(lsof -U "$path" -t)
+    program=$(ps -p "${pid}" -o comm=)
+    
+    # Display the information
+    echo -e "$proto\t-\t-\t-\t-\t$pid/$program\t$path"
+done
