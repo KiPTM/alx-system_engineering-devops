@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Install nginx
+
+apt-get update
+apt-get install -y nginx
+
+# Configure nginx to listen on port 80 and return "Hello World!"
+echo "Hello World!" > /usr/share/nginx/html/index.html
+
+# Restart nginx
+killall -s HUP nginx > /dev/null 2>&1
