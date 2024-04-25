@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 # Install nginx
 
+# Wait until the lock is released
+while fuser /var/lib/dpkg/lock >/dev/null 2>&1 ; do
+    echo "Waiting for another package manager to finish..."
+    sleep 1
+done
+
+# Update package lists and install nginx
 apt-get update
 apt-get install -y nginx
 
