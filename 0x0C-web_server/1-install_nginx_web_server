@@ -4,8 +4,33 @@
 apt-get update
 apt-get install -y nginx
 
-# Configure nginx to listen on port 80 and return "Hello World!"
-echo "Hello World!" > /usr/share/nginx/html/index.html
+# Verify nginx is installed
+if ! [ -x "$(command -v nginx)" ]; then
+  echo 'Error: nginx is not installed.' >&2
+  exit 1
+fi
 
-# Restart nginx
-killall -s HUP nginx > /dev/null 2>&1
+# Check if nginx is already running
+if pgrep -x "nginx" >/dev/null; then
+    echo "nginx is already running."
+else
+    # Start nginx
+    echo "Starting nginx..."
+    /usr/sbin/nginx
+fi
+
+# Ensure nginx listens on port 80
+sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
+
+# Reload nginx configuration
+echo "Reloading nginx configuration..."
+/usr/sbin/nginx -s reload
+
+# Check if nginx is serving "Hello World!" at the root
+response=$(curl -s http://localhost)
+if [[ $response == *"Hello World!"* ]]; then
+    echo "Nginx is serving 'Hello World!' at the root."
+else
+    echo "Error: Nginx is not serving 'Hello World!' at the root."
+    exit 1
+fi
