@@ -1,43 +1,14 @@
-#!/usr/bin/env bash
-# Install nginx
+#!/bin/bash
 
-# Wait until the lock is released
-while fuser /var/lib/dpkg/lock >/dev/null 2>&1 ; do
-    echo "Waiting for another package manager to finish..."
-    sleep 1
-done
-
-# Update package lists and install nginx
-apt-get update
+# Update package list and install nginx
+apt-get update -y
 apt-get install -y nginx
 
-# Verify nginx is installed
-if ! [ -x "$(command -v nginx)" ]; then
-  echo 'Error: nginx is not installed.' >&2
-  exit 1
-fi
+# Configure nginx to listen on port 80
+sed -i 's/^\(server {\)/\1\n    listen 80;/g' /etc/nginx/sites-available/default
 
-# Check if nginx is already running
-if pgrep -x "nginx" >/dev/null; then
-    echo "nginx is already running."
-else
-    # Start nginx
-    echo "Starting nginx..."
-    /usr/sbin/nginx
-fi
+# Restart nginx without systemctl
+/etc/init.d/nginx reload
 
-# Ensure nginx listens on port 80
-sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
-
-# Reload nginx configuration
-echo "Reloading nginx configuration..."
-/usr/sbin/nginx -s reload
-
-# Check if nginx is serving "Hello World!" at the root
-response=$(curl -s http://localhost)
-if [[ $response == *"Hello World!"* ]]; then
-    echo "Nginx is serving 'Hello World!' at the root."
-else
-    echo "Error: Nginx is not serving 'Hello World!' at the root."
-    exit 1
-fi
+# Create index.html with "Hello World!" content
+echo "Hello World!" > /var/www/html/index.html
