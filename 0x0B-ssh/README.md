@@ -5,6 +5,7 @@ How to create an SSH RSA key pair
 How to connect to a remote host using an SSH RSA key pair
 The advantage of using #!/usr/bin/env bash instead of /bin/bash
 
+
 Allowed editors: vi, vim, emacs
 All your files will be interpreted on Ubuntu 20.04 LTS
 All your files should end with a new line
