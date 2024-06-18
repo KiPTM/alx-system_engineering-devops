@@ -1,11 +1,5 @@
 #!/bin/bash
-
-# Set the number of iterations
-it=1
-
-# Loop for a specified number of iterations
-for (( i=1; i<=$it; i++ ))
+while [[ true ]]
 do
-    echo "Terminated"
     sleep 2
 done
